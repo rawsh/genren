@@ -1,36 +1,39 @@
-FROM nvidia/cuda:12.0.1-cudnn8-devel-ubuntu18.04
+# FROM nvidia/cuda:11.1-devel-ubuntu20.04
+FROM nvidia/cuda:11.1.1-devel-ubuntu20.04
 
-# set bash as current shell
-RUN chsh -s /bin/bash
-SHELL ["/bin/bash", "-c"]
+ENV CONDA_DIR /anaconda3
+
+# system dependencies
+RUN apt-get update -q
+RUN DEBIAN_FRONTEND="noninteractive" TZ=America/New_York apt-get -y install tzdata
+RUN apt-get install -q -y freeglut3-dev wget zip ffmpeg
 
 # install anaconda
-RUN apt-get update
-RUN apt-get install -y wget bzip2 ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 git mercurial subversion && \
-        apt-get clean
+RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh; \
+    chmod +x ./Anaconda3-2020.11-Linux-x86_64.sh; \
+    ./Anaconda3-2020.11-Linux-x86_64.sh -b -p $CONDA_DIR; \
+    rm ./Anaconda3-2020.11-Linux-x86_64.sh
+ENV PATH=$CONDA_DIR/bin:$PATH
 
+COPY SoftRas /workspace/SoftRas
+COPY lasr.yml /workspace/lasr.yml
 
-RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2023.03-Linux-x86_64.sh -O ~/anaconda.sh && \
-        /bin/bash ~/anaconda.sh -b -p /opt/conda && \
-        rm ~/anaconda.sh && \
-        ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-        echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
-        find /opt/conda/ -follow -type f -name '*.a' -delete && \
-        find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
-        /opt/conda/bin/conda clean -afy
+# setup conda env 
+RUN cd /workspace
+RUN conda env create -f /workspace/lasr.yml
+#RUN . /anaconda3/etc/profile.d/conda.sh; conda activate lasr; cd /workspace/SoftRas; python setup.py install
 
-# set path to conda
-ENV PATH /opt/conda/bin:$PATH
+# notes: need https://github.com/ShichenLiu/SoftRas
+# torchvision=0.11.3=py38_cu111
+# pytorch=1.8.2=py3.8_cuda11.1_cudnn8.0.5_0
 
-# setup conda virtual environment
-COPY ./env.yml /tmp/env.yml
+COPY . /workspace
 
-#RUN conda update conda \
-#    && conda env create --name genren -f /tmp/env.yml -vv
+RUN conda init bash
+RUN echo "conda activate lasr" >> ~/.bashrc
+ENV PATH /anaconda3/envs/lasr/bin:$PATH
+ENV CONDA_DEFAULT_ENV $lasr
 
-# RUN conda update conda
-RUN conda env create --name genren -f /tmp/env.yml -v
+WORKDIR /workspace
 
-RUN echo "conda activate genren" >> ~/.bashrc
-ENV PATH /opt/conda/envs/genren/bin:$PATH
-ENV CONDA_DEFAULT_ENV $genren
+RUN bash
