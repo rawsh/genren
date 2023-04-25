@@ -107,7 +107,7 @@ dependencies:
 - pysocks=1.7.1=pyha2e5f31_6
 - python=3.8.16=h7a1cb2a_3
 - python_abi=3.8=2_cp38
-- pytorch=1.10.2=py3.8_cuda11.1_cudnn8.0.5_0
+- pytorch=1.10.1=py3.8_cuda11.1_cudnn8.0.5_0
 - pytorch-mutex=1.0=cuda
 - pywavelets=1.4.1=py38h5eee18b_0
 - pyyaml=6.0=py38h5eee18b_1
@@ -122,8 +122,8 @@ dependencies:
 - tifffile=2020.10.1=py38hdd07704_2
 - tk=8.6.12=h1ccaba5_0
 - toolz=0.12.0=py38h06a4308_0
-- torchaudio=0.10.2=py38_cu111
-- torchvision=0.11.3=py38_cu111
+- torchaudio=0.10.1=py38_cu111
+- torchvision=0.11.2=py38_cu111
 - tqdm=4.65.0=pyhd8ed1ab_1
 - trimesh=3.21.5=pyhd8ed1ab_0
 - typing_extensions=4.5.0=pyha770c72_0
