@@ -5,7 +5,7 @@ FROM nvidia/cuda:11.1.1-devel-ubuntu20.04
 RUN rm -f /etc/apt/sources.list.d/*.list
 
 # Install some basic utilities.
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     curl \
     ca-certificates \
     sudo \
@@ -38,13 +38,13 @@ ENV MAMBA_EXE=/usr/local/bin/micromamba \
     CONDA_PREFIX=/home/user/micromamba \
     PATH=/home/user/micromamba/bin:$PATH
 
-# Set up the base Conda environment by installing PyTorch and friends.
-COPY . /workspace
+COPY Dockerfile /workspace/Dockerfile
+COPY genren.yml /workspace/genren.yml
 
 # setup conda env 
-RUN micromamba create -qy -n genren -f /workspace/genren.yml -v \
- && micromamba shell init --shell=bash --prefix="$MAMBA_ROOT_PREFIX" \
- && micromamba clean -qya
+RUN micromamba create -qy -n genren -f /workspace/genren.yml -v
+RUN micromamba shell init --shell=bash --prefix="$MAMBA_ROOT_PREFIX"
+RUN micromamba clean -qya
 
 # RUN cd /workspace
 # RUN conda env create -f /workspace/genren.yml
@@ -61,6 +61,15 @@ RUN micromamba create -qy -n genren -f /workspace/genren.yml -v \
 #RUN echo "conda activate genren" >> ~/.bashrc
 #ENV PATH /opt/conda/envs/genren/bin:$PATH
 #ENV CONDA_DEFAULT_ENV $genren
+
+COPY . /workspace
+
+SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
+RUN cd /workspace/SoftRas; python setup.py install
+
+# defualt
+RUN echo "micromamba activate genren" >> ~/.bashrc
+ENV PATH /home/user/micromamba/envs/genren/bin:$PATH
 
 WORKDIR /workspace
 
