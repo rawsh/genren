@@ -45,7 +45,7 @@ RUN micromamba create -qy -n genren -f /workspace/genren.yml \
  && micromamba shell init --shell=bash --prefix="$MAMBA_ROOT_PREFIX" \
  && micromamba clean -qya
 
-RUN cd /workspace
+# RUN cd /workspace
 # RUN conda env create -f /workspace/genren.yml
 #RUN . /anaconda3/etc/profile.d/conda.sh; conda activate lasr; cd /workspace/SoftRas; python setup.py install
 
