@@ -3,4 +3,4 @@
 	url = https://github.com/ThibaultGROUEIX/ChamferDistancePytorch
 [submodule "SoftRas"]
 	path = SoftRas
-	url = git@github.com:ShichenLiu/SoftRas.git
+	url = git@github.com:rawsh/SoftRas.git
