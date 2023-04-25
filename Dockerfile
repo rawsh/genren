@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     bzip2 \
     libx11-6 \
     wget \
+    libxml2-dev \
  && rm -rf /var/lib/apt/lists/*
 
 # ENV CONDA_DIR /anaconda3
@@ -41,7 +42,7 @@ ENV MAMBA_EXE=/usr/local/bin/micromamba \
 COPY . /workspace
 
 # setup conda env 
-RUN micromamba create -qy -n genren -f /workspace/genren.yml \
+RUN micromamba create -qy -n genren -f /workspace/genren.yml -v \
  && micromamba shell init --shell=bash --prefix="$MAMBA_ROOT_PREFIX" \
  && micromamba clean -qya
 
