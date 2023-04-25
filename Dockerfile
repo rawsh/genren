@@ -53,13 +53,13 @@ RUN cd /workspace
 # torchvision=0.11.3=py38_cu111
 # pytorch=1.8.2=py3.8_cuda11.1_cudnn8.0.5_0
 
-SHELL ["conda", "run", "-n", "genren", "/bin/bash", "-c"]
+# SHELL ["conda", "run", "-n", "genren", "/bin/bash", "-c"]
 # RUN cd /workspace/SoftRas; python setup.py install
 
-RUN conda init bash
-RUN echo "conda activate genren" >> ~/.bashrc
-ENV PATH /opt/conda/envs/genren/bin:$PATH
-ENV CONDA_DEFAULT_ENV $genren
+#RUN conda init bash
+#RUN echo "conda activate genren" >> ~/.bashrc
+#ENV PATH /opt/conda/envs/genren/bin:$PATH
+#ENV CONDA_DEFAULT_ENV $genren
 
 WORKDIR /workspace
 
