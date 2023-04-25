@@ -54,7 +54,7 @@ RUN cd /workspace
 # pytorch=1.8.2=py3.8_cuda11.1_cudnn8.0.5_0
 
 SHELL ["conda", "run", "-n", "genren", "/bin/bash", "-c"]
-RUN cd /workspace/SoftRas; python setup.py install
+# RUN cd /workspace/SoftRas; python setup.py install
 
 RUN conda init bash
 RUN echo "conda activate genren" >> ~/.bashrc
