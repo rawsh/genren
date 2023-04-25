@@ -42,7 +42,9 @@ COPY Dockerfile /workspace/Dockerfile
 COPY genren.yml /workspace/genren.yml
 
 # setup conda env 
-RUN micromamba create -qy -n genren -f /workspace/genren.yml -v
+RUN --mount=type=cache,target=/home/user/micromamba/pkgs/ \
+  micromamba create -qy -n genren -f /workspace/genren.yml -v
+  
 RUN micromamba shell init --shell=bash --prefix="$MAMBA_ROOT_PREFIX"
 RUN micromamba clean -qya
 
@@ -64,8 +66,8 @@ RUN micromamba clean -qya
 
 COPY . /workspace
 
-SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
-RUN cd /workspace/SoftRas; python setup.py install
+# SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
+# RUN cd /workspace/SoftRas; python setup.py install
 
 # defualt
 RUN echo "micromamba activate genren" >> ~/.bashrc
