@@ -770,6 +770,7 @@ def get_pixel_unprojection_with_vertex_occlusion(V, ren, I, faces,
                               T = depth_per_v_normalized.unsqueeze(-1).expand(-1,-1,3)
                              ) # B x (3+1) x H x W
         depth_image = rendered_depth[:, 0:3, :, :]
+        print("DEPTH IMAGE:", depth_image)
         rendered_depth_alpha_mask = rendered_depth[:, -1, :, :].unsqueeze(1)
     
         ### Depth image denormalization ###

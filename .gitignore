@@ -2,6 +2,17 @@
 .DS_STORE
 genren-output/
 
+OUT/
+Models/
+
+ShapeNetCore.v2_normalized/
+ShapeNetRenderings/
+
+car-rendering
+car-images
+cabinet-rendering
+cabinet-images
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

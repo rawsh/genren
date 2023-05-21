@@ -38,7 +38,6 @@ ENV MAMBA_EXE=/usr/local/bin/micromamba \
     CONDA_PREFIX=/home/user/micromamba \
     PATH=/home/user/micromamba/bin:$PATH
 
-COPY Dockerfile /workspace/Dockerfile
 COPY genren.yml /workspace/genren.yml
 
 # setup conda env 
@@ -55,6 +54,7 @@ RUN micromamba clean -qya
 # notes: need https://github.com/ShichenLiu/SoftRas
 # torchvision=0.11.3=py38_cu111
 # pytorch=1.8.2=py3.8_cuda11.1_cudnn8.0.5_0
+# pip install git+https://github.com/kwotsin/mimicry.git
 
 # SHELL ["conda", "run", "-n", "genren", "/bin/bash", "-c"]
 # RUN cd /workspace/SoftRas; python setup.py install
@@ -64,9 +64,15 @@ RUN micromamba clean -qya
 #ENV PATH /opt/conda/envs/genren/bin:$PATH
 #ENV CONDA_DEFAULT_ENV $genren
 
+# Run load
+# python loadtest.py Models/model-cars-latest.state_dict.pt recon_test_v img_recon --options_choice cars --imgs_dir car-images --allow_overwrite True
+
+# COPY /home/robert/COMPSCI-591NR-Project/datasets/ShapeNetRenderings /ShapeNetRenderings
+# COPY /home/robert/COMPSCI-591NR-Project/datasets/ShapeNetCore.v2_normalized /ShapeNetCore.v2_normalized
+
 COPY . /workspace
 
-# SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
+
 # RUN cd /workspace/SoftRas; python setup.py install
 
 # defualt
@@ -74,5 +80,11 @@ RUN echo "micromamba activate genren" >> ~/.bashrc
 ENV PATH /home/user/micromamba/envs/genren/bin:$PATH
 
 WORKDIR /workspace
+
+SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
+RUN pip install git+https://github.com/kwotsin/mimicry.git
+
+RUN CD SoftRas && pip install .
+# RUN micromamba run -n genren "pip install git+https://github.com/kwotsin/mimicry.git; cd SoftRas && pip install ."
 
 RUN bash

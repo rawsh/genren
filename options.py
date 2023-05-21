@@ -193,10 +193,12 @@ OPTIONS = {
 
     'test' : { # Example
         'COPY_FROM'              : 'shapenet',
-        'TEST_img_data_dir'      : '/path/to/TEST/images',
-        'TEST_shapes_data_dir'   : '/path/to/TEST/shapes',
-        'img_data_dir'           : './cabinet-mini/images-test-cabinet-02933112-mini',
-        'shape_data_dir'         : './cabinet-mini/shapes-test-cabinet-02933112-mini',
+        'TEST_img_data_dir'      : './car-images',
+        'TEST_shapes_data_dir'   : './car-shapes',
+        # 'img_data_dir'           : './cabinet-mini/images-test-cabinet-02933112-mini',
+        # 'shape_data_dir'         : './cabinet-mini/shapes-test-cabinet-02933112-mini',
+        'img_data_dir'           : '/home/robert/COMPSCI-591NR-Project/datasets/ShapeNetRenderings',
+        'shape_data_dir'         : '/home/robert/COMPSCI-591NR-Project/datasets/ShapeNetCore.v2_normalized',
         'chamfer_only_iters'     : 100,
         'template_path'    : None,
         'template_scale'   : None, # 1.0,
@@ -265,6 +267,8 @@ OPTIONS = {
         'template_path'    : None,
         'template_scale'   : None, # 1.0,
         'data_scale'       : None, # 1.0,
+        'use_occlusion'    : False,
+        'learn_template'   : True
     },
     #----#
     'planes' : { # Templated 
