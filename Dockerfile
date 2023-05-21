@@ -70,21 +70,20 @@ RUN micromamba clean -qya
 # COPY /home/robert/COMPSCI-591NR-Project/datasets/ShapeNetRenderings /ShapeNetRenderings
 # COPY /home/robert/COMPSCI-591NR-Project/datasets/ShapeNetCore.v2_normalized /ShapeNetCore.v2_normalized
 
-COPY . /workspace
-
-
 # RUN cd /workspace/SoftRas; python setup.py install
 
 # defualt
 RUN echo "micromamba activate genren" >> ~/.bashrc
 ENV PATH /home/user/micromamba/envs/genren/bin:$PATH
 
-WORKDIR /workspace
-
 SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
 RUN pip install git+https://github.com/kwotsin/mimicry.git
 
-RUN CD SoftRas && pip install .
+#COPY . /workspace
+#RUN mkdir /workspace
+WORKDIR /workspace
+
+#RUN cd SoftRas && pip install .
 # RUN micromamba run -n genren "pip install git+https://github.com/kwotsin/mimicry.git; cd SoftRas && pip install ."
 
 RUN bash
