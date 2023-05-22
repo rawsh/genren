@@ -836,7 +836,8 @@ class CyclicGenRen(nn.Module):
         g_template = self._dgl_template_graph # 
         # The constructor passing a DGL graph only copies the graph index 
         # (not the nodal/edge-wise features)
-        GL = [ dgl.DGLGraph(g_template) for _ in range(B) ]
+        # GL = [ dgl.DGLGraph(g_template) for _ in range(B) ]
+        GL = [ g_template for _ in range(B) ]
         if as_dglb:
             return dgl.batch(GL)
         return GL

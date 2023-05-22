@@ -156,7 +156,8 @@ def rotate(angle, axis, V):
     )
     norms = (axis**2).sum(dim=1).sqrt().unsqueeze(1)
     aas = angle * axis / norms
-    R = kornia.conversions.angle_axis_to_rotation_matrix(aas) # B x 3 x 3
+    # R = kornia.conversions.angle_axis_to_rotation_matrix(aas) # B x 3 x 3
+    R = kornia.geometry.conversions.angle_axis_to_rotation_matrix(aas) # B x 3 x 3
     VT = V.permute(0,2,1) # B x 3 x |V|
     RVT = torch.bmm(R, VT)
     if not has_B_dim:

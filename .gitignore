@@ -7,11 +7,17 @@ Models/
 
 ShapeNetCore.v2_normalized/
 ShapeNetRenderings/
+ShapeNet_Selected/
 
 car-rendering
 car-images
 cabinet-rendering
 cabinet-images
+chair_images_test
+chair_images_train
+chair_models_test
+chair_models_train
+chair-test
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

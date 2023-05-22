@@ -1164,7 +1164,8 @@ class MS_SSIM_Loss(nn.Module):
                                size_average     = False, 
                                channel          = inchannels, 
                                win_size         = win_size,
-                               nonnegative_ssim = True )
+                            #    nonnegative_ssim = True 
+                               )
 
     def forward(self, I1, I2):
         """
