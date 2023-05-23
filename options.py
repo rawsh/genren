@@ -199,6 +199,8 @@ OPTIONS = {
         # 'shape_data_dir'         : './cabinet-mini/shapes-test-cabinet-02933112-mini',
         'img_data_dir'           : '/project/chair_images_train',
         'shape_data_dir'         : '/project/chair_models_train',
+        # 'img_data_dir'           : '/project/chair_images_train_depth_png',
+        # 'shape_data_dir'         : '/project/chair_models_train_depth',
 
         'out_dir_prepen'   : '',
         'data_scale'       : None, # 1.0,
@@ -206,10 +208,9 @@ OPTIONS = {
         # 'mode_1_iters'           : 20,
         # 'mode_2_iters'           : 20,
         # 'cy2_annealing_period'   : 10, 
-        'B_imgs'           : 8,
-        'B_shapes'         : 8,
-        'print_every'      : 5,
-        'save_imgs_every'  : 9,
+        'B_imgs'           : 32,
+        'B_shapes'         : 32,
+        'print_every'      : 100,
     },
 
     ################################################################################

@@ -1,11 +1,14 @@
 # FROM nvidia/cuda:11.1-devel-ubuntu20.04
-FROM nvidia/cuda:11.1.1-devel-ubuntu20.04
+# FROM nvidia/cuda:11.1.1-devel-ubuntu20.04
+FROM nvidia/cuda:11.7.0-devel-ubuntu22.04
 
 # Remove any third-party apt sources to avoid issues with expiring keys.
 RUN rm -f /etc/apt/sources.list.d/*.list
 
 # Install some basic utilities.
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    g++-12 \
+    gcc-12 \
     curl \
     ca-certificates \
     sudo \
@@ -38,11 +41,14 @@ ENV MAMBA_EXE=/usr/local/bin/micromamba \
     CONDA_PREFIX=/home/user/micromamba \
     PATH=/home/user/micromamba/bin:$PATH
 
-COPY genren.yml /workspace/genren.yml
+# COPY genren.yml /workspace/genren.yml
+COPY env.yml /workspace/env.yml
 
 # setup conda env 
+# RUN --mount=type=cache,target=/home/user/micromamba/pkgs/ \
+#   micromamba create -qy -n genren -f /workspace/genren.yml -v
 RUN --mount=type=cache,target=/home/user/micromamba/pkgs/ \
-  micromamba create -qy -n genren -f /workspace/genren.yml -v
+  micromamba create -qy -n genren -f /workspace/env.yml -v
   
 RUN micromamba shell init --shell=bash --prefix="$MAMBA_ROOT_PREFIX"
 RUN micromamba clean -qya
@@ -77,7 +83,9 @@ RUN echo "micromamba activate genren" >> ~/.bashrc
 ENV PATH /home/user/micromamba/envs/genren/bin:$PATH
 
 SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
+# RUN micromamba install tensorflow-gpu -c defaults
 RUN pip install git+https://github.com/kwotsin/mimicry.git
+RUN pip install geomloss pytorch_msssim nvidia-tensorrt
 
 #COPY . /workspace
 #RUN mkdir /workspace

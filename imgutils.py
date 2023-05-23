@@ -5,6 +5,9 @@ from PIL import Image, ImageDraw
 from utils import InfiniteDataLoader
 import random, torch.nn.functional as F
 
+# import imageio
+# import cv2
+
 ### IO ###
 
 def imswrite_t(imgs, path, ncols = 8, white_mask = True, denorm_m1_1 = True, corner_strings = None, 
@@ -181,6 +184,8 @@ class SingleDirImageDataset(torch.utils.data.Dataset):
         return len(self.files)
 
     def __getitem__(self, i):
+        # return self.T(cv2.imread(self.files[i],  cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH | cv2.OPENCV_IO_ENABLE_OPENEXR))
+        # return self.T(imageio.imread(self.files[i]))
         return self.T( Image.open( self.files[i] ) ) # [0:3, :, :] # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         #return self.data[i]
 
@@ -226,6 +231,7 @@ class SinglePreloadedDirImageDataset(torch.utils.data.Dataset):
         logging.info('\tUsing Alpha = ' + str(use_alpha))
         self.folder = folder
         ALLOWED_EXTS = [ ".png" ]
+        # ALLOWED_EXTS = [ ".exr" ]
         self.files = [ os.path.join(folder, f) for f in os.listdir(folder)
                        if any(f.endswith(a) for a in ALLOWED_EXTS) ]
         print('Obtained', len(self.files), 'files')
@@ -246,7 +252,10 @@ class SinglePreloadedDirImageDataset(torch.utils.data.Dataset):
         else:
             rtrans = [ transforms.Resize(resize) ]
 
+        # img = cv2.imread(self.files[0],  cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH | cv2.OPENCV_IO_ENABLE_OPENEXR)
+        # img = imageio.imread(self.files[0])
         eg_1 = transforms.ToTensor()( Image.open(self.files[0]) )
+        # eg_1 = transforms.ToTensor()( img )
         eg_ncs = eg_1.shape[0]
         if not use_alpha and eg_ncs == 4:
           norm3 = normer
@@ -261,6 +270,14 @@ class SinglePreloadedDirImageDataset(torch.utils.data.Dataset):
                           if not use_alpha else
                           self.T( Image.open(file) ) )
                         for file in self.files ]
+        # self.data = [ ( self.T( imageio.imread(file) ) #[0:3,:,:] 
+        #                   if not use_alpha else
+        #                   self.T( imageio.imread(file) ) )
+        #                 for file in self.files ]
+        # self.data = [ ( self.T( cv2.imread(file,  cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH | cv2.OPENCV_IO_ENABLE_OPENEXR) ) #[0:3,:,:] 
+        #                   if not use_alpha else
+        #                   self.T( cv2.imread(file,  cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH | cv2.OPENCV_IO_ENABLE_OPENEXR) ) )
+        #                 for file in self.files ]
         if (not use_alpha) and eg_ncs == 4:
             logging.info('Removing transparent bg in images')
             self.data = [ rgba_img_to_wbg(datum)
