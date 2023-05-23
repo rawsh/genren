@@ -84,8 +84,8 @@ ENV PATH /home/user/micromamba/envs/genren/bin:$PATH
 
 SHELL ["micromamba", "run", "-n", "genren", "/bin/bash", "-c"]
 # RUN micromamba install tensorflow-gpu -c defaults
-RUN pip install git+https://github.com/kwotsin/mimicry.git
-RUN pip install geomloss pytorch_msssim nvidia-tensorrt
+# RUN pip install git+https://github.com/kwotsin/mimicry.git
+# RUN pip install geomloss pytorch_msssim nvidia-tensorrt
 
 #COPY . /workspace
 #RUN mkdir /workspace
